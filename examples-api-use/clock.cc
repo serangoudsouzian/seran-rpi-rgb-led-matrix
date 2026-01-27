@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
   // We accept multiple format lines
 
   std::vector<std::string> format_lines;
-  Color color(255, 255, 0);
+  Color color(0, 0, 0);
   Color bg_color(0, 0, 0);
   Color outline_color(0,0,0);
   bool with_outline = false;
@@ -161,6 +161,8 @@ int main(int argc, char *argv[]) {
   signal(SIGTERM, InterruptHandler);
   signal(SIGINT, InterruptHandler);
 
+  uint32_t continuum = 0;
+  
   while (!interrupt_received) {
     offscreen->Fill(bg_color.r, bg_color.g, bg_color.b);
     localtime_r(&next_time.tv_sec, &tm);
@@ -180,7 +182,27 @@ int main(int argc, char *argv[]) {
                            letter_spacing);
       line_offset += font.height() + line_spacing;
     }
-
+    
+    continuum += 1;
+    continuum %= 3 * 255;
+    int r = 0, g = 0, b = 0;
+      if (continuum <= 255) {
+        int c = continuum;
+        b = 255 - c;
+        r = c;
+        color = Color color(r,g,b);
+      } else if (continuum > 255 && continuum <= 511) {
+        int c = continuum - 256;
+        r = 255 - c;
+        g = c;
+        color = Color color(r,g,b);
+      } else {
+        int c = continuum - 512;
+        g = 255 - c;
+        b = c;
+        color = Color color(r,g,b);
+      }
+    
     // Wait until we're ready to show it.
     clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &next_time, NULL);
 
