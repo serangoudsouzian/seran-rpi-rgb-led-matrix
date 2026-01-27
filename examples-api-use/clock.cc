@@ -162,7 +162,8 @@ int main(int argc, char *argv[]) {
   signal(SIGINT, InterruptHandler);
 
   uint32_t continuum = 0;
-  
+  int roy = 0, gee = 0, biv = 0;
+
   while (!interrupt_received) {
     offscreen->Fill(bg_color.r, bg_color.g, bg_color.b);
     localtime_r(&next_time.tv_sec, &tm);
@@ -185,22 +186,21 @@ int main(int argc, char *argv[]) {
     
     continuum += 1;
     continuum %= 3 * 255;
-    int r = 0, g = 0, b = 0;
       if (continuum <= 255) {
         int c = continuum;
-        b = 255 - c;
-        r = c;
-        color = Color color(r,g,b);
+        biv = 255 - c;
+        roy = c;
+        color = Color color(roy,gee,biv);
       } else if (continuum > 255 && continuum <= 511) {
         int c = continuum - 256;
-        r = 255 - c;
-        g = c;
-        color = Color color(r,g,b);
+        roy = 255 - c;
+        gee = c;
+        color = Color color(roy,gee,biv);
       } else {
         int c = continuum - 512;
-        g = 255 - c;
-        b = c;
-        color = Color color(r,g,b);
+        gee = 255 - c;
+        biv = c;
+        color = Color color(roy,gee,biv);
       }
     
     // Wait until we're ready to show it.
