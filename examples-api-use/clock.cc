@@ -190,18 +190,17 @@ int main(int argc, char *argv[]) {
         int c = continuum;
         biv = 255 - c;
         roy = c;
-        color = Color color(roy,gee,biv);
       } else if (continuum > 255 && continuum <= 511) {
         int c = continuum - 256;
         roy = 255 - c;
         gee = c;
-        color = Color color(roy,gee,biv);
       } else {
         int c = continuum - 512;
         gee = 255 - c;
         biv = c;
-        color = Color color(roy,gee,biv);
       }
+    fprintf(stdout, "SERAN- "+next_time.tv_sec);
+    
     
     // Wait until we're ready to show it.
     clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &next_time, NULL);
